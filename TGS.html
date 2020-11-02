@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="vue.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <style>
+        .penting {
+            background-color: red;
+        }
+
+        .biasa {
+            background-color: dodgerblue;
+        }
+
+        .tidakpenting {
+            background-color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container bg-primary py-2" id="app">
+        <h1 class="text-white">Todo List</h1>
+
+        <div v-for="item in todo" class="card text-left mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <small
+                        v-bind:class="{penting: item.prioritas === 'Penting', biasa: item.prioritas === 'Biasa', tidakpenting: item.prioritas === 'Tidak Penting' }"
+                        class="px-2 py-1  rounded-lg text-white">{{ item.prioritas }}</small>
+
+                    <div @click="removeTodo(item)"><i class="far fa-times-circle"></i></div>
+                </div>
+                <div>
+                    <h1 class="card-title text-capitalize ">{{ item.name }}</h1>
+                </div>
+                <span class="">{{ item.catatan }}</span>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <form @submit.prevent="submit" action="https://vuejs.org/" method="post">
+                    <div class="form-group">
+                        <label>Nama To-Do</label>
+                        <input v-model="objbaru.namatodo" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Prioritas</label>
+                        <select v-model="objbaru.prioritas" class="form-control" name="" id="">
+                            <option value="">Pilih Prioritas</option>
+                            <option value="Penting">Penting</option>
+                            <option value="Biasa">Biasa</option>
+                            <option value="Tidak Penting">Tidak Penting</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Catatan</label>
+                        <input v-model="objbaru.catatan" type="text" class="form-control">
+                    </div>
+                    <button type="reset" class="btn btn-dark">Reset</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body" style="margin: auto;">
+                {{ calvin.nama }} | {{ calvin.npm }} | {{ calvin.kelas }}
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            calvin: {
+                nama: 'Calvindo Aldi Sutanto',
+                npm: '180709771',
+                kelas: 'Kelas PAW B',
+            },
+            todo: [],
+            objbaru: {
+                namatodo: null,
+                prioritas: null,
+                catatan: null
+            },
+            penting: 'bg-primary',
+            biasa: 'bg-success',
+            tidakpenting: 'bg-danger'
+        },
+        methods: {
+            submit: function (event) {
+                let text = event.target.value
+                this.todo.push({
+                    name: this.objbaru.namatodo,
+                    prioritas: this.objbaru.prioritas,
+                    catatan: this.objbaru.catatan
+                });
+                this.objbaru.namatodo = ''
+                this.objbaru.prioritas = ''
+                this.objbaru.catatan = ''
+            },
+            removeTodo(item) {
+                const todoIndex = this.todo.indexOf(item);
+                this.todo.splice(todoIndex)
+            }
+        },
+    });
+</script>
+
+</html>
